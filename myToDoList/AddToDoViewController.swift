@@ -1,6 +1,6 @@
 import UIKit
 
-class AddToDoViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class AddToDoViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
     var toDoTableViewController: ToDoTableViewController?=nil
     
     var pickerController = UIImagePickerController()
@@ -47,6 +47,15 @@ class AddToDoViewController: UIViewController, UIImagePickerControllerDelegate, 
         let tap = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
         tap.cancelsTouchesInView = false
         view.addGestureRecognizer(tap)
+        
+        nameTextField.delegate = self
+        textFieldShouldReturn(nameTextField)
+    }
+    
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
     
     

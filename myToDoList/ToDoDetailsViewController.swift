@@ -13,8 +13,8 @@ class ToDoDetailsViewController: UIViewController {
     }
     
     func removeItemFromToDoList() {
-        let alert = UIAlertController(title: "Alert", message: "Item's done and will be removed from To Do List", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: NSLocalizedString("Ok", comment: "Item has been removed from To Do List"), style: .default, handler: {_ in
+        let alert = UIAlertController(title: "Attention.", message: "To Do's done and will be removed from To Do List", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Ok", comment: "To Do has been removed from To Do List"), style: .default, handler: {_ in
             
             if let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext {
                 if let toDo = self.toDoCD {
