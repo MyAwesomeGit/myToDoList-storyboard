@@ -15,7 +15,7 @@ class InfoViewController: UIViewController, UINavigationControllerDelegate {
                     if toDos == [] {
                         nothingToDeleteNotification()
                     } else {
-                        deleteToDos()
+                        alertBeforeDeleting()
                     }
                 }
             }
@@ -23,7 +23,21 @@ class InfoViewController: UIViewController, UINavigationControllerDelegate {
     }
     
     
-    func deleteToDos() {
+    func alertBeforeDeleting() {
+        let alert = UIAlertController(title: "Attention.", message: "Do you really want to permanently delete all ToDos?", preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Delete", comment: "Do you really want to permanently delete all ToDos?"), style: .destructive, handler: {_ in
+            self.deleteAllToDos()
+        }))
+        
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action canceled"), style: .default, handler: {_ in
+            
+        }))
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    
+    func deleteAllToDos() {
         if let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext {
             if let toDosFromCoreData = try? context.fetch(ToDoCD.fetchRequest()) {
                 for toDos in toDosFromCoreData {
