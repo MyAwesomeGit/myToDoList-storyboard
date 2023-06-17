@@ -19,6 +19,8 @@ class ToDoTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor(red: 222/256, green: 220/256, blue: 217/256, alpha: 1.0)]
+ 
+        navigationController?.navigationBar.barTintColor = UIColor(red: 75/256, green: 107/256, blue: 82/256, alpha: 1.0)
     }
     
     

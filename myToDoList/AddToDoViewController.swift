@@ -22,23 +22,20 @@ class AddToDoViewController: UIViewController, UIImagePickerControllerDelegate, 
     }
     
     @IBAction func addTapped(_ sender: Any) {
-        
-        if let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext {
-            let newToDo = ToDoCD(context: context)
-            
-            newToDo.priority = Int32(prioritySegment.selectedSegmentIndex)
-            if let name = nameTextField.text {
-                newToDo.name = name
+        if nameTextField.text == "" {
+            showAlertIfNameIsEmpty()
+        } else {
+            if let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext {
+                let newToDo = ToDoCD(context: context)
+                if let name = nameTextField.text {
+                    newToDo.name = name
+                    newToDo.priority = Int32(prioritySegment.selectedSegmentIndex)
+                    newToDo.image = imageView.image?.jpegData(compressionQuality: 1.0)
+                    (UIApplication.shared.delegate as? AppDelegate)?.saveContext()
+                }
             }
-            
-            if newToDo.name == "" {
-                showAlertIfNameIsEmpty()
-            }
-            
-            newToDo.image = imageView.image?.jpegData(compressionQuality: 1.0)
-            (UIApplication.shared.delegate as? AppDelegate)?.saveContext()
+            navigationController?.popViewController(animated: true)
         }
-        navigationController?.popViewController(animated: true)
     }
     
     
@@ -69,7 +66,7 @@ class AddToDoViewController: UIViewController, UIImagePickerControllerDelegate, 
     func showAlertIfNameIsEmpty() {
         let alert = UIAlertController(title: "Enter ToDo name.", message: "Every ToDo needs a name.", preferredStyle: .alert)
         
-        alert.addAction(UIAlertAction(title: NSLocalizedString("Ok", comment: "Enter ToDo name."), style: .default, handler: {_ in
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Ok", comment: "Every ToDo needs a name."), style: .default, handler: {_ in
         }))
         
         self.present(alert, animated: true, completion: nil)
