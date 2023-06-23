@@ -10,6 +10,7 @@ Swift App. Storyboard. To Do List. Core Data.
 * Capture Photo To Your ToDo
 * Delete Your ToDo
 * Delete All ToDos
+* Arrange ToDos by moving them
 * Persist data with Core Data
 
 ## App Image Example
