@@ -18,9 +18,20 @@ class ToDoTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.navigationItem.leftBarButtonItem = self.editButtonItem
+        
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor(red: 222/256, green: 220/256, blue: 217/256, alpha: 1.0)]
  
         navigationController?.navigationBar.barTintColor = UIColor(red: 75/256, green: 107/256, blue: 82/256, alpha: 1.0)
+    }
+    
+    
+    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+      return true
+    }
+
+    override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
     }
     
     
@@ -97,8 +108,6 @@ class ToDoTableViewController: UITableViewController {
                 detailsToDoViewController.toDoCD = selectedToDo
             }
         }
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
     }
     
 }

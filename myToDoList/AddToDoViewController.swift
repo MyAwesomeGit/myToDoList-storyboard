@@ -21,6 +21,7 @@ class AddToDoViewController: UIViewController, UIImagePickerControllerDelegate, 
         present(pickerController, animated: true, completion: nil)
     }
     
+    
     @IBAction func addTapped(_ sender: Any) {
         if nameTextField.text == "" {
             showAlertIfNameIsEmpty()
