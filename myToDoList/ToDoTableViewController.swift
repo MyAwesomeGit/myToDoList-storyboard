@@ -1,4 +1,5 @@
 import UIKit
+import CoreData
 
 class ToDoTableViewController: UITableViewController {
     
@@ -22,17 +23,21 @@ class ToDoTableViewController: UITableViewController {
         self.navigationItem.leftBarButtonItem = self.editButtonItem
         
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor(red: 222/256, green: 220/256, blue: 217/256, alpha: 1.0)]
- 
+        
         navigationController?.navigationBar.barTintColor = UIColor(red: 75/256, green: 107/256, blue: 82/256, alpha: 1.0)
     }
     
     
     override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-      return true
+        return true
     }
-
+    
+    
     override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-    }
+            let itemMove = toDoCDs[sourceIndexPath.row]
+            toDoCDs.remove(at: sourceIndexPath.row)
+            toDoCDs.insert(itemMove, at: destinationIndexPath.row)
+        }
     
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -57,24 +62,23 @@ class ToDoTableViewController: UITableViewController {
         
         let selectedToDo = toDoCDs[indexPath.row]
         
-        if selectedToDo.priority == 1 {
-            if let name = selectedToDo.name {
-                cell.textLabel?.text = "🐼" + name
-            }
-        }
-        else if selectedToDo.priority == 2 {
-            if let name = selectedToDo.name {
-                cell.textLabel?.text = "🐼🐼" + name
-            }
-        }
-        else {
-            if let name = selectedToDo.name {
-                cell.textLabel?.text = name
+        if let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext {
+            if let toDosFromCoreData = try? context.fetch(ToDoCD.fetchRequest()) {
+                for todoCell in toDosFromCoreData {
+                    if selectedToDo.priority == 1 {
+                        cell.textLabel?.text = "🐼" + selectedToDo.name!
+                    } else if selectedToDo.priority == 2 {
+                        cell.textLabel?.text = "🐼🐼" + selectedToDo.name!
+                    } else {
+                        cell.textLabel?.text = selectedToDo.name!
+                    }
+                }
             }
         }
         if let data = selectedToDo.image {
             cell.imageView?.image = UIImage(data: data)
         }
+        
         return cell
     }
     
@@ -94,9 +98,10 @@ class ToDoTableViewController: UITableViewController {
                 getToDos()
             }
         }
+        
     }
     
-
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         if let addToDoViewController = segue.destination as? AddToDoViewController {

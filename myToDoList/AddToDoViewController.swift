@@ -1,6 +1,10 @@
 import UIKit
+import CoreData
 
 class AddToDoViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
+    
+    var toDoCDs: [ToDoCD] = []
+    
     var toDoTableViewController: ToDoTableViewController?=nil
     
     var pickerController = UIImagePickerController()
@@ -29,16 +33,21 @@ class AddToDoViewController: UIViewController, UIImagePickerControllerDelegate, 
             if let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext {
                 let newToDo = ToDoCD(context: context)
                 if let name = nameTextField.text {
-                    newToDo.name = name
-                    newToDo.priority = Int32(prioritySegment.selectedSegmentIndex)
-                    newToDo.image = imageView.image?.jpegData(compressionQuality: 1.0)
-                    (UIApplication.shared.delegate as? AppDelegate)?.saveContext()
+                    if let toDosFromCoreData = try? context.fetch(ToDoCD.fetchRequest()) {
+                        if let toDos = toDosFromCoreData as? [ToDoCD] {
+                            newToDo.name = name
+                            newToDo.priority = Int32(prioritySegment.selectedSegmentIndex)
+                            newToDo.image = imageView.image?.jpegData(compressionQuality: 1.0)
+                            newToDo.position = Int32(toDos.count)
+                            (UIApplication.shared.delegate as? AppDelegate)?.saveContext()
+                        }
+                    }
                 }
             }
             navigationController?.popViewController(animated: true)
         }
     }
-    
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -81,5 +90,6 @@ class AddToDoViewController: UIViewController, UIImagePickerControllerDelegate, 
         
         self.present(alert, animated: true, completion: nil)
     }
+ 
     
 }
