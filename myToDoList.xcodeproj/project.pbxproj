@@ -68,18 +68,34 @@
 			children = (
 				C8C7B13D2A24A782001B9077 /* AppDelegate.swift */,
 				C8C7B13F2A24A782001B9077 /* SceneDelegate.swift */,
+				C8F431962A49BEB100B0D2CF /* Model */,
+				C8F431952A49BE9E00B0D2CF /* Controller */,
 				C8C7B1432A24A782001B9077 /* Main.storyboard */,
-				C89169032A3C84F0006522D2 /* InfoViewController.swift */,
-				C8C7B1582A24B28E001B9077 /* AddToDoViewController.swift */,
-				C8C7B1542A24A8DA001B9077 /* SampleToDo.swift */,
-				C8C7B1562A24A961001B9077 /* ToDoTableViewController.swift */,
-				C8C7B15C2A24BBCD001B9077 /* ToDoDetailsViewController.swift */,
-				C8C7B1492A24A784001B9077 /* Assets.xcassets */,
 				C8C7B14B2A24A784001B9077 /* LaunchScreen.storyboard */,
+				C8C7B1492A24A784001B9077 /* Assets.xcassets */,
 				C8C7B14E2A24A784001B9077 /* Info.plist */,
 				C8C7B1462A24A782001B9077 /* myToDoList.xcdatamodeld */,
 			);
 			path = myToDoList;
+			sourceTree = "<group>";
+		};
+		C8F431952A49BE9E00B0D2CF /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				C89169032A3C84F0006522D2 /* InfoViewController.swift */,
+				C8C7B1582A24B28E001B9077 /* AddToDoViewController.swift */,
+				C8C7B1562A24A961001B9077 /* ToDoTableViewController.swift */,
+				C8C7B15C2A24BBCD001B9077 /* ToDoDetailsViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		C8F431962A49BEB100B0D2CF /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				C8C7B1542A24A8DA001B9077 /* SampleToDo.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

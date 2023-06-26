@@ -1,10 +1,8 @@
 import UIKit
 
-class ToDoDetailsViewController: UIViewController {
+class ToDoDetailsViewController: UIViewController, UINavigationControllerDelegate, UITextFieldDelegate {
     
     var toDoCD: ToDoCD? = nil
-    
-    @IBOutlet weak var toDoLabel: UILabel!
     
     @IBOutlet weak var imageViewDetails: UIImageView!
     
@@ -12,8 +10,24 @@ class ToDoDetailsViewController: UIViewController {
         removeItemFromToDoList()
     }
     
+    @IBOutlet weak var editName: UITextField!
+    
+    @IBAction func editToDoNameTapped(_ sender: Any) {
+        if editName.text == "" {
+        } else {
+            if let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext.self {
+                    if let toDo = self.toDoCD {
+                        toDo.name = editName.text
+                        toDo.priority = 0
+                    }
+                    (UIApplication.shared.delegate as? AppDelegate)?.saveContext()
+            }
+        }
+    }
+    
+    
     func removeItemFromToDoList() {
-        let alert = UIAlertController(title: "Attention.", message: "To Do's done and will be removed from To Do List", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Attention.", message: "To Do's done and will be removed from To Do List.", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: NSLocalizedString("Ok", comment: "To Do has been removed from To Do List"), style: .default, handler: {_ in
             
             if let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext {
@@ -39,7 +53,7 @@ class ToDoDetailsViewController: UIViewController {
         if let toDo = toDoCD {
             if toDo.priority == 1 {
                 if let name = toDo.name {
-                    toDoLabel.text = "🐼" + name
+                    editName.text = "🐼" + name
                     if let data = toDo.image {
                         imageViewDetails.image = UIImage(data: data)
                     }
@@ -47,8 +61,7 @@ class ToDoDetailsViewController: UIViewController {
             }
             else if toDo.priority == 2 {
                 if let name = toDo.name {
-                    toDoLabel.text = "🐼🐼" + name
-                    
+                    editName.text = "🐼🐼" + name
                     if let data = toDo.image {
                         imageViewDetails.image = UIImage(data: data)
                     }
@@ -56,8 +69,7 @@ class ToDoDetailsViewController: UIViewController {
             }
             else {
                 if let name = toDo.name {
-                    toDoLabel.text = name
-                    
+                    editName.text = name
                     if let data = toDo.image {
                         imageViewDetails.image = UIImage(data: data)
                     }
@@ -67,6 +79,23 @@ class ToDoDetailsViewController: UIViewController {
                 }
             }
         }
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
+        
+        editName.delegate = self
+        textFieldShouldReturn(editName)
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    
+    
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
     }
     
 }
