@@ -14,6 +14,7 @@ class ToDoDetailsViewController: UIViewController, UINavigationControllerDelegat
     
     @IBAction func editToDoNameTapped(_ sender: Any) {
         if editName.text == "" {
+            editName.text = "Enter ToDo name."
         } else {
             if let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext.self {
                     if let toDo = self.toDoCD {
@@ -27,8 +28,8 @@ class ToDoDetailsViewController: UIViewController, UINavigationControllerDelegat
     
     
     func removeItemFromToDoList() {
-        let alert = UIAlertController(title: "Attention.", message: "To Do's done and will be removed from To Do List.", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: NSLocalizedString("Ok", comment: "To Do has been removed from To Do List"), style: .default, handler: {_ in
+        let alert = UIAlertController(title: "Attention.", message: "ToDo completed and will be removed from To Do List.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Ok", comment: "ToDo completed and will be removed from To Do List."), style: .default, handler: {_ in
             
             if let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext {
                 if let toDo = self.toDoCD {
@@ -51,42 +52,32 @@ class ToDoDetailsViewController: UIViewController, UINavigationControllerDelegat
         super.viewDidLoad()
         
         if let toDo = toDoCD {
-            if toDo.priority == 1 {
-                if let name = toDo.name {
-                    editName.text = "🐼" + name
-                    if let data = toDo.image {
-                        imageViewDetails.image = UIImage(data: data)
+            if let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext {
+                if let toDosFromCoreData = try? context.fetch(ToDoCD.fetchRequest()) {
+                    for todoCell in toDosFromCoreData {
+                        if toDo.priority == 1 {
+                            editName.text = "🐼" + toDo.name!
+                        } else if toDo.priority == 2 {
+                            editName.text = "🐼🐼" + toDo.name!
+                        } else {
+                            editName.text = toDo.name!
+                        }
                     }
                 }
             }
-            else if toDo.priority == 2 {
-                if let name = toDo.name {
-                    editName.text = "🐼🐼" + name
-                    if let data = toDo.image {
-                        imageViewDetails.image = UIImage(data: data)
-                    }
-                }
-            }
-            else {
-                if let name = toDo.name {
-                    editName.text = name
-                    if let data = toDo.image {
-                        imageViewDetails.image = UIImage(data: data)
-                    }
-                }
-                if let data = toDo.image {
-                    imageViewDetails?.image = UIImage(data: data)
-                }
+            if let data = toDo.image {
+                imageViewDetails.image = UIImage(data: data)
             }
         }
+        
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
         tap.cancelsTouchesInView = false
         view.addGestureRecognizer(tap)
         
         editName.delegate = self
-        textFieldShouldReturn(editName)
     }
+    
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
